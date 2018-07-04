@@ -1,0 +1,21 @@
+<odoo>
+    <!--创建组OpenAcademy / Manager，拥有模型OpenAcademy的所有访问权限-->
+    <record id="group_manager" model="res.groups">
+       <field name="name">OpenAcademy / Manager</field>
+    </record>
+
+    <!--为课程模型和组"OpenAcademy / Manager"添加记录规则，限制课程负责人的write和unlink权限。如果课程没有负责人，所有组中的用户必须可以修改它。-->
+    <record id="only_responsible_can_modify" model="ir.rule">
+           <field name="name">Only Responsible can modify Course</field>
+           <field name="model_id" ref="model_openacademy_course"/>
+           <field name="groups" eval="[(4, ref('openacademy.group_manager'))]"/>
+           <field name="perm_read" eval="0"/>
+           <field name="perm_write" eval="1"/>
+           <field name="perm_create" eval="0"/>
+           <field name="perm_unlink" eval="1"/>
+           <field name="domain_force">
+               ['|', ('responsible_id','=',False),
+                     ('responsible_id','=',user.id)]
+           </field>
+    </record>
+</odoo>

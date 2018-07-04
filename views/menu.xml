@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <!--Courses-->
+        <record model="ir.actions.act_window" id="course_list_action">
+           <field name="name">Courses</field>
+           <field name="res_model">openacademy.course</field>
+           <field name="view_type">form</field>
+           <field name="view_mode">tree,form</field>
+            <field name="context" eval="{'search_default_my_courses': 1}"/>
+           <field name="help" type="html">
+               <p class="oe_view_nocontent_create">Create the first course
+               </p>
+           </field>
+        </record>
+
+        <menuitem id="main_openacademy_menu" name="Open Academy"/>
+        <menuitem id="openacademy_menu"
+                  name="Open Academy"
+                  parent="main_openacademy_menu"/>
+        <menuitem id="courses_menu" name="Courses"
+                  parent="openacademy_menu"
+                  action="course_list_action"/>
+
+        <!--Sessions-->
+        <record model="ir.actions.act_window" id="session_list_action">
+           <field name="name">Sessions</field>
+           <field name="res_model">openacademy.session</field>
+           <field name="view_type">form</field>
+           <field name="view_mode">tree,form,calendar,graph,kanban</field>
+        </record>
+
+        <menuitem id="session_menu" name="Sessions"
+                  parent="openacademy_menu"
+                  action="session_list_action"/>
+
+        <!--Contacts-->
+        <record model="ir.actions.act_window" id="contact_list_action">
+           <field name="name">Contacts</field>
+           <field name="res_model">res.partner</field>
+           <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="configuration_menu"
+                  name="Configuration"
+                  parent="main_openacademy_menu"/>
+        <menuitem id="contact_menu"
+                  name="Contacts"
+                  parent="configuration_menu"
+                  action="contact_list_action"/>
+
+        <!--业务伙伴分类-->
+        <record model="ir.actions.act_window" id="contact_cat_list_action">
+           <field name="name">Contact Tags</field>
+           <field name="res_model">res.partner.category</field>
+           <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="contact_cat_menu" name="Contact Tags"
+                  parent="configuration_menu"
+                  action="contact_cat_list_action"/>
+
+        <!--创建新的业务伙伴分类Teacher / Level 1 和Teacher / Level 2-->
+        <record model="res.partner.category" id="teacher1">
+           <field name="name">Teacher / Level 1</field>
+        </record>
+
+        <record model="res.partner.category" id="teacher2">
+           <field name="name">Teacher / Level 2</field>
+        </record>
+
+        <!--启动向导-->
+        <act_window id="launch_session_wizard"
+                   name="Add Attendees"
+                   src_model="openacademy.session"
+                   res_model="openacademy.wizard"
+                   view_mode="form"
+                   target="new"
+                   key2="client_action_multi"/>
+
+        <!--仪板表-->
+        <record model="ir.actions.act_window" id="open_board_session">
+            <field name="name">Session Dashboard</field>
+            <field name="res_model">board.board</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="usage">menu</field>
+            <field name="view_id" ref="board_session_form"/>
+        </record>
+
+        <menuitem
+           name="Session Dashboard" parent="base.menu_reporting_dashboard"
+           action="open_board_session"
+           sequence="1"
+           id="menu_board_session"/>
+    </data>
+</odoo>
